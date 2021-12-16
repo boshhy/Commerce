@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import ListingForm
+from django.contrib.auth.decorators import login_required
 
 from .models import Listings, User
 
@@ -66,6 +67,7 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
+@login_required(login_url="login")
 def add_listing(request):
     if request.method == "POST":
         return HttpResponse("Thanks for your submission")
