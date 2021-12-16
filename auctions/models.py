@@ -1,40 +1,68 @@
+from typing import List
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.fields import related
 
 
 class User(AbstractUser):
     pass
 
 
-class auction_listings(models.Model):
-    # title
+class Category(models.Model):
+    name = models.CharField(max_length=64, blank=False, default="Unknown")
+
+    def __str__(self):
+        return self.name
+
+
+class Listings(models.Model):
     title = models.CharField(max_length=64, blank=False)
-    # description
     description = models.TextField(blank=False)
-    # seller
     seller = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listings")
-    # starting_bid
-    starting_bid = models.DecimalField(
+    new_bid = models.DecimalField(
         max_digits=16, decimal_places=2, default=0.00)
-    # current_bid
-    Current_bid = models.DecimalField(
+    current_bid = models.DecimalField(
         max_digits=16, decimal_places=2, default=0.00)
-    # category
-    # TODO
-    # active
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name="listings")
     active = models.BooleanField(default=True)
     # image URL
-    # TODO
+    imageURL = models.CharField(max_length=1024)
+    buyer = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="listings", blank=True)
+
+    def __str__(self):
+        return f"{self.title} \nseller:{self.seller} \ncurrent bid:{self.current_bid} \nactive:{self.active} \nbuyer:{self.buyer}"
 
 
-class watch_list(models.Model):
-    pass
+class WatchList(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="watchlist")
+    listings = models.ForeignKey(
+        Listings, on_delete=models.CASCADE, related_name="watchlist")
+
+    def __str__(self):
+        return self.listings
 
 
-class bids(models.Model):
-    pass
+class Bids(models.Model):
+    amount = models.DecimalField(max_digits=16, decimal_places=2, blank=False)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="bids", blank=False)
+    listing = models.ForeignKey(
+        Listings, on_delete=models.CASCADE, related_name="bids", blank=False)
+
+    def __str__(self):
+        return self.bid
 
 
-class comments(models.Model):
-    pass
+class Comments(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="comments", blank=False)
+    comment = models.TextField()
+    listing = models.ForeignKey(
+        Listings, on_delete=models.CASCADE, related_name="comments")
+
+    def __str__(self):
+        return self.comment
