@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import ListingForm
+from .models import Category, ListingForm
 from django.contrib.auth.decorators import login_required
 
 from .models import Listings, User
@@ -70,8 +70,32 @@ def register(request):
 @login_required(login_url="login")
 def add_listing(request):
     if request.method == "POST":
-        return HttpResponse("Thanks for your submission")
+        form = ListingForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            description = form.cleaned_data["description"]
+            starting_bid = form.cleaned_data["starting_bid"]
+            imageURL = form.cleaned_data["imageURL"]
+
+            category = Category(name=form.cleaned_data["category"])
+            category.save()
+
+            new_listing = Listings(title=title, description=description,
+                                   seller=request.user, current_bid=starting_bid, category=category, imageURL=imageURL)
+            new_listing.save()
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            # need to give invalid form back to user for fixing
+            pass
     else:
         return render(request, "auctions/new.html", {
             "form": ListingForm()
         })
+
+
+def listing(request, listing_id):
+    listing = Listings.objects.get(id=listing_id)
+
+    return render(request, "auctions/listing.html", {
+        "test": listing
+    })

@@ -7,9 +7,9 @@ from django import forms
 
 class ListingForm(forms.Form):
     title = forms.CharField(max_length=64)
-    Description = forms.CharField(widget=forms.Textarea())
+    description = forms.CharField(widget=forms.Textarea())
     starting_bid = forms.DecimalField(max_digits=16, decimal_places=2)
-    Category = forms.CharField(max_length=64, required=False)
+    category = forms.CharField(max_length=64, required=False)
     imageURL = forms.CharField(max_length=1024, required=False)
 
 
@@ -39,7 +39,7 @@ class Listings(models.Model):
     # image URL
     imageURL = models.CharField(max_length=1024)
     buyer = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="purchase_history", blank=True)
+        User, on_delete=models.CASCADE, related_name="purchase_history", blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} \nseller:{self.seller} \ncurrent bid:{self.current_bid} \nactive:{self.active} \nbuyer:{self.buyer}"
