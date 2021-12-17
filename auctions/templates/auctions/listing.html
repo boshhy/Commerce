@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h1>test</h1>
+        <li>{{ test.title }}</li>
+        <li>{{ test.current_bid }}</li>
+        {% if user.is_authenticated %}
+        <form>
+            Bid for this item!
+            Bid higher than: {{ test.current_bid }}
+            <button>BID</button>
+        </form>
+        {% endif %}
+        Login in is: {{user}}
+        <br>
+        owner of this item is: {{ test.seller }}
+
+{% endblock %}

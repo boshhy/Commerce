@@ -11,7 +11,7 @@ from .models import Listings, User
 
 def index(request):
     return render(request, "auctions/index.html", {
-        "listings": Listings.objects.all()
+        "listings": Listings.objects.all(),
     })
 
 
@@ -76,9 +76,12 @@ def add_listing(request):
             description = form.cleaned_data["description"]
             starting_bid = form.cleaned_data["starting_bid"]
             imageURL = form.cleaned_data["imageURL"]
+            # category = Category.objects.get(
+            #   name=f'{form.cleaned_data["category"]}')
 
-            category = Category(name=form.cleaned_data["category"])
-            category.save()
+            return render(request, "auctions/test.html", {
+                "test": Category.objects.get(name="shoes")
+            })
 
             new_listing = Listings(title=title, description=description,
                                    seller=request.user, current_bid=starting_bid, category=category, imageURL=imageURL)
