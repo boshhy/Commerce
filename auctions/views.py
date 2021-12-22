@@ -76,18 +76,12 @@ def add_listing(request):
             description = form.cleaned_data["description"]
             starting_bid = form.cleaned_data["starting_bid"]
             imageURL = form.cleaned_data["imageURL"]
-            # category = Category.objects.get(
-            #   name=f'{form.cleaned_data["category"]}')
-            name_test = form.cleaned_data["category"]
+            category = Category(name=form.cleaned_data["category"])
 
-            # TODO need to fix this so it save the actual name not just the variable name
-            test = Category(name=name_test)
-            test.save()
-
-            return render(request, "auctions/test.html", {
-                "test": form.cleaned_data["category"]
-                # "test": Category.objects.get(name="shoes")
-            })
+            if not Category.objects.filter(name=category):
+                category.save()
+            else:
+                category = Category.objects.get(name=category)
 
             new_listing = Listings(title=title, description=description,
                                    seller=request.user, current_bid=starting_bid, category=category, imageURL=imageURL)

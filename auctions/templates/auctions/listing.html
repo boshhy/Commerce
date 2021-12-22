@@ -4,15 +4,19 @@
     <h1>test</h1>
         <li>{{ test.title }}</li>
         <li>{{ test.current_bid }}</li>
+        <br>
+        owner of this item is: {{ test.seller }}
+        <br>
+        <img src="{{ test.imageURL }}">
         {% if user.is_authenticated %}
         <form>
             Bid for this item!
             Bid higher than: {{ test.current_bid }}
             <button>BID</button>
         </form>
-        {% endif %}
-        Login in is: {{user}}
         <br>
-        owner of this item is: {{ test.seller }}
+        Add Item to Watchlist
+        <button>Add To Watchlist</button>
+        {% endif %}
 
 {% endblock %}
