@@ -7,7 +7,7 @@
     {% for listing in listings %}
         <li><a href="{% url 'listing' listing.id %}"> {{ listing.title }} </a></li>
         <ul>
-            <li>description:: {{ listing.description }}</li>
+            <li>description: {{ listing.description }}</li>
             <li>seller: {{ listing.seller }}</li>
             <li>current bid: {{ listing.current_bid }}</li>
             <li>category: {{ listing.category }}</li>

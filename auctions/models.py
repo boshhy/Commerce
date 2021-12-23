@@ -1,7 +1,7 @@
 from typing import List
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models.fields import related
+from django.db.models.fields import NullBooleanField, related
 from django import forms
 
 
@@ -112,12 +112,12 @@ class Listings(models.Model):
 
 class WatchList(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="watchlist")
+        User, on_delete=models.CASCADE, related_name="watchlist", blank=False)
     listings = models.ForeignKey(
-        Listings, on_delete=models.CASCADE, related_name="watchlist")
+        Listings, on_delete=models.CASCADE, related_name="watchlist", blank=False)
 
     def __str__(self):
-        return self.listings
+        return f"{self.user} {self.listings}"
 
 
 class Bids(models.Model):
