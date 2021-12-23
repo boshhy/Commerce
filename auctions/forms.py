@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category
+from .models import Category, Bids
 
 
 class ListingForm(forms.Form):
@@ -10,3 +10,7 @@ class ListingForm(forms.Form):
     category = forms.ChoiceField(
         widget=forms.Select(), choices=Category.choices)
     imageURL = forms.CharField(max_length=1024, required=False)
+
+
+class BidForm(forms.Form):
+    bid = forms.DecimalField(max_digits=16, decimal_places=2)

@@ -1,31 +1,33 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h1>test</h1>
-        <li>{{ test.title }}</li>
-        <li>Current Bid: {{ test.current_bid }}</li>
+    <h1>listing</h1>
+        <li><b>Title: </b>{{ listing.title }}</li>
+        <li><b>Current Bid: </b>{{ listing.current_bid }}</li>
+
+        <li><b>owner of this item is: </b>{{ listing.seller }}</li>
         <br>
-        owner of this item is: {{ test.seller }}
-        <br>
-        <img src="{{ test.imageURL }}">
+        <img src="{{ listing.imageURL }}">
         {% if user.is_authenticated %}
             Bid for this item!
-            Bid higher than: {{ test.current_bid }}
-            <form action="{% url 'listing' test.id %}" method="POST">
+            Bid higher than: {{ listing.current_bid }}
+            <form action="{% url 'listing' listing.id %}" method="POST">
                 {% csrf_token %}
-                <input name="bid" type="number" step="0.01">
-                <button>BID</button>
+                {% for field in bid_form %}
+                    {{ field }}
+                {% endfor %}
+                <button type="submit">BID</button>
             </form>
             <br>
             {% if on_watchlist %}
-                <form action="{% url 'listing' test.id %}" method="POST">
+                <form action="{% url 'listing' listing.id %}" method="POST">
                     {% csrf_token %}
                     Remove from Watchlist
                     <input name="watchlist" type="hidden">
                     <button style="color: red;">Remove from Watchlist</button>
                 </form>
             {% else %}
-                <form action="{% url 'listing' test.id %}" method="POST">
+                <form action="{% url 'listing' listing.id %}" method="POST">
                     {% csrf_token %}
                     Add Item to Watchlist
                     <input name="watchlist" type="hidden">

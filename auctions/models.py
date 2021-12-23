@@ -117,7 +117,7 @@ class Bids(models.Model):
         Listings, on_delete=models.CASCADE, related_name="bids", blank=False)
 
     def __str__(self):
-        return self.bid
+        return f"Amount: {self.amount} ----- User: {self.user} ----- Listing: {self.listing.title}"
 
 
 class Comments(models.Model):

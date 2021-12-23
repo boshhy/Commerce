@@ -3,8 +3,8 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import WatchList, Category
-from .forms import ListingForm
+from .models import WatchList, Category, Bids
+from .forms import ListingForm, BidForm
 from django.contrib.auth.decorators import login_required
 
 from .models import Listings, User
@@ -100,9 +100,14 @@ def add_listing(request):
 def listing(request, listing_id):
     listing = Listings.objects.get(pk=int(listing_id))
     on_watchlist = False
+    is_bid_higher = False
+
+    # Check to see if the user is logged in and if the current listing being
+    # viewed is on current users watchlist
     if request.user.is_authenticated:
         if WatchList.objects.filter(user=request.user, listings=listing):
             on_watchlist = True
+
     if request.method == "POST":
         if "watchlist" in request.POST:
             if not WatchList.objects.filter(user=request.user, listings=listing):
@@ -113,15 +118,37 @@ def listing(request, listing_id):
                 WatchList.objects.filter(
                     user=request.user, listings=listing).delete()
                 on_watchlist = False
+
         if "bid" in request.POST:
-            if int(request.POST.get("bid")) > listing.current_bid:
+            has_bids = Bids.objects.filter(listing=listing)
+
+            # If current listing does not have any bids
+            # Accept bids >= (greater than or equal to) current_bid
+            if not has_bids:
+                if float(request.POST.get("bid")) >= listing.current_bid:
+                    listing.current_bid = request.POST.get('bid')
+                    listing.save()
+                    new_bid = Bids(amount=listing.current_bid,
+                                   user=request.user, listing=listing)
+                    new_bid.save()
+                    is_bid_higher = True
+
+            # If current listing already has some bids
+            # Accept only bids > (greater than) current_bid
+            elif float(request.POST.get("bid")) > listing.current_bid:
                 listing.current_bid = request.POST.get('bid')
                 listing.save()
+                new_bid = Bids(amount=listing.current_bid,
+                               user=request.user, listing=listing)
+                new_bid.save()
+                is_bid_higher = True
+
             return render(request, "auctions/test.html", {
-                "test": listing.current_bid
+                "test": is_bid_higher
             })
 
     return render(request, "auctions/listing.html", {
-        "test": listing,
-        "on_watchlist": on_watchlist
+        "listing": listing,
+        "on_watchlist": on_watchlist,
+        "bid_form": BidForm()
     })
