@@ -9,18 +9,27 @@
         <br>
         <img src="{{ test.imageURL }}">
         {% if user.is_authenticated %}
-        <form>
-            Bid for this item!
-            Bid higher than: {{ test.current_bid }}
-            <button>BID</button>
-        </form>
-        <br>
-        <form action="{% url 'listing' test.id %}" method="POST">
-            {% csrf_token %}
-            Add Item to Watchlist
-            <input name="watchlist" type="hidden">
-            <button>Add To Watchlist</button>
-        </form>
+            <form>
+                Bid for this item!
+                Bid higher than: {{ test.current_bid }}
+                <button>BID</button>
+            </form>
+            <br>
+            {% if on_watchlist %}
+                <form action="{% url 'listing' test.id %}" method="POST">
+                    {% csrf_token %}
+                    Remove from Watchlist
+                    <input name="watchlist" type="hidden">
+                    <button style="color: red;">Remove from Watchlist</button>
+                </form>
+            {% else %}
+                <form action="{% url 'listing' test.id %}" method="POST">
+                    {% csrf_token %}
+                    Add Item to Watchlist
+                    <input name="watchlist" type="hidden">
+                    <button>Add To Watchlist</button>
+                </form>
+            {% endif %}
         {% endif %}
 
 {% endblock %}

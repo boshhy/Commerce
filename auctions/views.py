@@ -98,12 +98,22 @@ def add_listing(request):
 
 def listing(request, listing_id):
     listing = Listings.objects.get(pk=int(listing_id))
+    on_watchlist = False
+    if request.user.is_authenticated:
+        if WatchList.objects.filter(user=request.user, listings=listing):
+            on_watchlist = True
     if request.method == "POST":
         if "watchlist" in request.POST:
             if not WatchList.objects.filter(user=request.user, listings=listing):
                 watchlist = WatchList(user=request.user, listings=listing)
                 watchlist.save()
+                on_watchlist = True
+            else:
+                WatchList.objects.filter(
+                    user=request.user, listings=listing).delete()
+                on_watchlist = False
 
     return render(request, "auctions/listing.html", {
-        "test": listing
+        "test": listing,
+        "on_watchlist": on_watchlist
     })
