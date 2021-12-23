@@ -11,6 +11,17 @@
         {% if user.is_authenticated %}
             Bid for this item!
             Bid higher than: {{ listing.current_bid }}
+            {% if is_post %}
+                {% if is_bid_higher %}
+                    <div class="alert alert-success" role="alert" style="width: 90%;">
+                        Your bid was accepted!
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger" role="alert" style="width: 90%;">
+                        Bid was not accepted!
+                    </div>
+                {% endif %}
+            {% endif %}
             <form action="{% url 'listing' listing.id %}" method="POST">
                 {% csrf_token %}
                 {% for field in bid_form %}

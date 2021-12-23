@@ -101,6 +101,7 @@ def listing(request, listing_id):
     listing = Listings.objects.get(pk=int(listing_id))
     on_watchlist = False
     is_bid_higher = False
+    is_post = False
 
     # Check to see if the user is logged in and if the current listing being
     # viewed is on current users watchlist
@@ -109,7 +110,9 @@ def listing(request, listing_id):
             on_watchlist = True
 
     if request.method == "POST":
+        is_post = True
         if "watchlist" in request.POST:
+            is_post = False
             if not WatchList.objects.filter(user=request.user, listings=listing):
                 watchlist = WatchList(user=request.user, listings=listing)
                 watchlist.save()
@@ -143,12 +146,17 @@ def listing(request, listing_id):
                 new_bid.save()
                 is_bid_higher = True
 
-            return render(request, "auctions/test.html", {
-                "test": is_bid_higher
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "on_watchlist": on_watchlist,
+                "bid_form": BidForm(),
+                "is_bid_higher": is_bid_higher,
+                "is_post": is_post
             })
 
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "on_watchlist": on_watchlist,
-        "bid_form": BidForm()
+        "bid_form": BidForm(),
+        "is_post": is_post
     })
