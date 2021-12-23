@@ -3,7 +3,8 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import Category, ListingForm, WatchList
+from .models import WatchList, Category
+from .forms import ListingForm
 from django.contrib.auth.decorators import login_required
 
 from .models import Listings, User
@@ -112,6 +113,12 @@ def listing(request, listing_id):
                 WatchList.objects.filter(
                     user=request.user, listings=listing).delete()
                 on_watchlist = False
+        if "bid" in request.POST:
+            listing.current_bid = request.POST.get('bid')
+            listing.save()
+            return render(request, "auctions/test.html", {
+                "test": listing.current_bid
+            })
 
     return render(request, "auctions/listing.html", {
         "test": listing,

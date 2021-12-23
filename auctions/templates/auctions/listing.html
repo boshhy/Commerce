@@ -9,9 +9,11 @@
         <br>
         <img src="{{ test.imageURL }}">
         {% if user.is_authenticated %}
-            <form>
-                Bid for this item!
-                Bid higher than: {{ test.current_bid }}
+            Bid for this item!
+            Bid higher than: {{ test.current_bid }}
+            <form action="{% url 'listing' test.id %}" method="POST">
+                {% csrf_token %}
+                <input name="bid" type="number" step="0.01">
                 <button>BID</button>
             </form>
             <br>
