@@ -114,8 +114,9 @@ def listing(request, listing_id):
                     user=request.user, listings=listing).delete()
                 on_watchlist = False
         if "bid" in request.POST:
-            listing.current_bid = request.POST.get('bid')
-            listing.save()
+            if int(request.POST.get("bid")) > listing.current_bid:
+                listing.current_bid = request.POST.get('bid')
+                listing.save()
             return render(request, "auctions/test.html", {
                 "test": listing.current_bid
             })
