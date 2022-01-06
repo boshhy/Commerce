@@ -1,3 +1,22 @@
 body {
     padding: 10px;
 }
+
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+td,th {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid black;
+}
+
+table {
+    table-layout: auto;
+    width: 500px;
+    border-collapse: collapse;
+    border: 1px solid black;
+}

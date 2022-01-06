@@ -13,7 +13,7 @@ from .models import Listings, User
 def index(request):
     # might want to only display the active listings
     return render(request, "auctions/index.html", {
-        "listings": Listings.objects.all(),
+        "listings": Listings.objects.filter(active=True),
     })
 
 
