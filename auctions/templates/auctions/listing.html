@@ -52,23 +52,40 @@
                     <button>Add To Watchlist</button>
                 </form>
             {% endif %}
-
-        <b> should add some comments here.</b>
-        <form action="{% url 'listing' listing.id %}" method="POST">
-            {% csrf_token %}
-            {% for field in comment_form %}
-                    {{ field }}
-            {% endfor %}
-            <br><button type="submit">Add a Comment</button>
-        </form>
-                
-
+            <br>
         {% endif %}
 
-
-        {% for comment in comments %}
-            {{ comment }}
+        {% if comments %}
+            <h4>Comments:</h4>
+            <table>
+                <tr>
+                    <th>Comment</th>
+                    <th>User</th>
+                </tr>
+                {% for comment in comments %}
+                <tr>
+                    <td> {{ comment }} </td>
+                    <td class="user_padding"> {{ comment.user }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
             <br>
-        {% endfor %}
+            <h4>Add a Comment</h4>
+            <form action="{% url 'listing' listing.id %}" method="POST">
+                {% csrf_token %}
+                {% for field in comment_form %}
+                        {{ field }}
+                {% endfor %}
+                <br><button type="submit">Add a Comment</button>
+            </form>
+        {% else %}
+            <br>
+            <div>
+                Sign in to add a comment.
+            </div>
+        {% endif %}
 
 {% endblock %}

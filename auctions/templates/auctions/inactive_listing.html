@@ -1,9 +1,16 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<div class="alert alert-danger" role="alert" style="margin: auto; width: 100%;">
-    <h4 style="margin: auto; text-align:center;">This listing has ended!</h4>
-</div>
+
+{% if has_won %}
+    <div class="alert alert-primary" role="alert" style="margin: auto; width: 100%;">
+        <h4 style="margin: auto; text-align:center;">You Won this Listing!</h4>
+    </div>
+{% else %}
+    <div class="alert alert-danger" role="alert" style="margin: auto; width: 100%;">
+        <h4 style="margin: auto; text-align:center;">This listing has ended!</h4>
+    </div>
+{% endif %}
 <div>
     {% if listing.imageURL %}
     <br>
@@ -16,19 +23,21 @@
     <b>Sold to: </b> {{ listing.buyer }} <br>
 </div>
 <br>
-<div>
-    <h5><b>comments:</b></h5>
-    <table>
-        <tr>
-          <th>Comment</th>
-          <th>User</th>
-        </tr>
-        {% for comment in comments %}
-        <tr>
-            <td> {{ comment }} </td>
-            <td> {{ comment.user }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</div>
+{% if comments %}
+    <div>
+        <h5><b>comments:</b></h5>
+        <table>
+            <tr>
+            <th>Comment</th>
+            <th>User</th>
+            </tr>
+            {% for comment in comments %}
+            <tr>
+                <td> {{ comment }} </td>
+                <td> {{ comment.user }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endif %}
 {% endblock %}

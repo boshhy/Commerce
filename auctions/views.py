@@ -196,11 +196,15 @@ def listing(request, listing_id):
 
 
 def inactive(request, listing_id):
+    has_won = False
     listing = Listings.objects.get(pk=int(listing_id))
     if listing.active == True:
         return redirect("listing", listing_id)
+    if listing.buyer == request.user:
+        has_won = True
     comments = Comments.objects.filter(listing=listing)
     return render(request, "auctions/inactive_listing.html", {
         "listing": listing,
         "comments": comments,
+        "has_won": has_won,
     })
