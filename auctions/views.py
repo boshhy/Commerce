@@ -3,8 +3,8 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import WatchList, Category, Bids
-from .forms import ListingForm, BidForm
+from .models import WatchList, Category, Bids, Comments
+from .forms import ListingForm, BidForm, CommentForm
 from django.contrib.auth.decorators import login_required
 
 from .models import Listings, User
@@ -99,6 +99,7 @@ def add_listing(request):
 
 def listing(request, listing_id):
     listing = Listings.objects.get(pk=int(listing_id))
+    comments = Comments.objects.filter(listing=listing)
     on_watchlist = False
     is_bid_higher = False
     is_post = False
@@ -122,7 +123,7 @@ def listing(request, listing_id):
                     user=request.user, listings=listing).delete()
                 on_watchlist = False
 
-        if "bid" in request.POST:
+        elif "bid" in request.POST:
             has_bids = Bids.objects.filter(listing=listing)
 
             # If current listing does not have any bids
@@ -151,12 +152,27 @@ def listing(request, listing_id):
                 "on_watchlist": on_watchlist,
                 "bid_form": BidForm(),
                 "is_bid_higher": is_bid_higher,
-                "is_post": is_post
+                "is_post": is_post,
+                "comment_form": CommentForm(),
+                "comments": comments,
             })
+
+        elif "comment" in request.POST:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = form.cleaned_data["comment"]
+                new_comment = Comments(
+                    user=request.user, comment=comment, listing=listing)
+                new_comment.save()
+
+                return HttpResponse("comment accepted")
+            return HttpResponse("something went wrong")
 
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "on_watchlist": on_watchlist,
         "bid_form": BidForm(),
-        "is_post": is_post
+        "is_post": is_post,
+        "comment_form": CommentForm(),
+        "comments": comments,
     })

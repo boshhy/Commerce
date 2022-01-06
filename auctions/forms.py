@@ -14,3 +14,7 @@ class ListingForm(forms.Form):
 
 class BidForm(forms.Form):
     bid = forms.DecimalField(max_digits=16, decimal_places=2)
+
+
+class CommentForm(forms.Form):
+    comment = forms.CharField(widget=forms.Textarea())

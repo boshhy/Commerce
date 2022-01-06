@@ -8,6 +8,7 @@
         <li><b>owner of this item is: </b>{{ listing.seller }}</li>
         <br>
         <img src="{{ listing.imageURL }}">
+        <br>
         {% if user.is_authenticated %}
             Bid for this item!
             Bid higher than: {{ listing.current_bid }}
@@ -45,6 +46,23 @@
                     <button>Add To Watchlist</button>
                 </form>
             {% endif %}
+
+        <b> should add some comments here.</b>
+        <form action="{% url 'listing' listing.id %}" method="POST">
+            {% csrf_token %}
+            {% for field in comment_form %}
+                    {{ field }}
+            {% endfor %}
+            <br><button type="submit">Add a Comment</button>
+        </form>
+                
+
         {% endif %}
+
+
+        {% for comment in comments %}
+            {{ comment }}
+            <br>
+        {% endfor %}
 
 {% endblock %}
