@@ -134,6 +134,7 @@ def listing(request, listing_id):
             if not has_bids:
                 if float(request.POST.get("bid")) >= listing.current_bid:
                     listing.current_bid = request.POST.get('bid')
+                    listing.buyer = request.user
                     listing.save()
                     new_bid = Bids(amount=listing.current_bid,
                                    user=request.user, listing=listing)
@@ -144,6 +145,7 @@ def listing(request, listing_id):
             # Accept only bids > (greater than) current_bid
             elif float(request.POST.get("bid")) > listing.current_bid:
                 listing.current_bid = request.POST.get('bid')
+                listing.buyer = request.user
                 listing.save()
                 new_bid = Bids(amount=listing.current_bid,
                                user=request.user, listing=listing)
@@ -176,8 +178,12 @@ def listing(request, listing_id):
                     "comment_form": CommentForm(),
                     "comments": comments,
                 })
-
             return HttpResponse("Something went wrong: Invalid Comment Form")
+
+        elif "end_listing" in request.POST:
+            listing.active = False
+            listing.save()
+            return redirect("inactive", listing_id)
 
     return render(request, "auctions/listing.html", {
         "listing": listing,

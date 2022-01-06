@@ -11,7 +11,10 @@
         <br>
         {% if user.is_authenticated %}
             {% if listing.seller == user %}
-                <button>cancel listing</button><br>
+            <form action="{% url 'listing' listing.id %}" method="POST">
+                {% csrf_token %}
+                <button name="end_listing" type="submit">cancel listing</button><br>
+            </form>
             {% endif %}
             Bid for this item!
             Bid higher than: {{ listing.current_bid }}
