@@ -17,4 +17,5 @@ class BidForm(forms.Form):
 
 
 class CommentForm(forms.Form):
-    comment = forms.CharField(widget=forms.Textarea())
+    comment = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 4, 'cols': 64}))

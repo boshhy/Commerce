@@ -10,6 +10,9 @@
         <img src="{{ listing.imageURL }}">
         <br>
         {% if user.is_authenticated %}
+            {% if listing.seller == user %}
+                <button>cancel listing</button><br>
+            {% endif %}
             Bid for this item!
             Bid higher than: {{ listing.current_bid }}
             {% if is_post %}

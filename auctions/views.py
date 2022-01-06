@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from .models import WatchList, Category, Bids, Comments
 from .forms import ListingForm, BidForm, CommentForm
@@ -11,6 +11,7 @@ from .models import Listings, User
 
 
 def index(request):
+    # might want to only display the active listings
     return render(request, "auctions/index.html", {
         "listings": Listings.objects.all(),
     })
@@ -99,6 +100,8 @@ def add_listing(request):
 
 def listing(request, listing_id):
     listing = Listings.objects.get(pk=int(listing_id))
+    if listing.active == False:
+        return redirect("inactive", listing_id)
     comments = Comments.objects.filter(listing=listing)
     on_watchlist = False
     is_bid_higher = False
@@ -165,8 +168,16 @@ def listing(request, listing_id):
                     user=request.user, comment=comment, listing=listing)
                 new_comment.save()
 
-                return HttpResponse("comment accepted")
-            return HttpResponse("something went wrong")
+                return render(request, "auctions/listing.html", {
+                    "listing": listing,
+                    "on_watchlist": on_watchlist,
+                    "bid_form": BidForm(),
+                    "is_post": False,
+                    "comment_form": CommentForm(),
+                    "comments": comments,
+                })
+
+            return HttpResponse("Something went wrong: Invalid Comment Form")
 
     return render(request, "auctions/listing.html", {
         "listing": listing,
@@ -174,5 +185,16 @@ def listing(request, listing_id):
         "bid_form": BidForm(),
         "is_post": is_post,
         "comment_form": CommentForm(),
+        "comments": comments,
+    })
+
+
+def inactive(request, listing_id):
+    listing = Listings.objects.get(pk=int(listing_id))
+    if listing.active == True:
+        return redirect("listing", listing_id)
+    comments = Comments.objects.filter(listing=listing)
+    return render(request, "auctions/inactive_listing.html", {
+        "listing": listing,
         "comments": comments,
     })

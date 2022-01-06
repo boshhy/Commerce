@@ -91,7 +91,7 @@ class Listings(models.Model):
         Category, on_delete=models.CASCADE, related_name="listings")
     active = models.BooleanField(default=True)
     # image URL
-    imageURL = models.CharField(max_length=1024)
+    imageURL = models.CharField(max_length=1024, blank=True)
     buyer = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="purchase_history", blank=True, null=True)
 
