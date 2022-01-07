@@ -208,3 +208,14 @@ def inactive(request, listing_id):
         "comments": comments,
         "has_won": has_won,
     })
+
+
+def watchlist(request):
+    watchlist = WatchList.objects.filter(
+        user=request.user, listings__active=True)
+    watchlist_inactive = WatchList.objects.filter(
+        user=request.user, listings__active=False)
+    return render(request, "auctions/watchlist.html", {
+        "watchlist": watchlist,
+        "watchlist_inactive": watchlist_inactive,
+    })
