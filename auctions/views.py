@@ -219,3 +219,17 @@ def watchlist(request):
         "watchlist": watchlist,
         "watchlist_inactive": watchlist_inactive,
     })
+
+
+def categories(request):
+    choices = Category.choices
+    return render(request, "auctions/categories.html", {
+        "choices": choices,
+    })
+
+
+def category(request, category):
+    listings = Listings.objects.filter(category__name=category)
+    return render(request, "auctions/category.html", {
+        "listings": listings,
+    })
