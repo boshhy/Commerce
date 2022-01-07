@@ -230,6 +230,9 @@ def categories(request):
 
 def category(request, category):
     listings = Listings.objects.filter(category__name=category)
-    return render(request, "auctions/category.html", {
-        "listings": listings,
-    })
+    if listings:
+        return render(request, "auctions/category.html", {
+            "listings": listings,
+        })
+
+    return HttpResponse("sorry no items under that category")
