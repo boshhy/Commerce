@@ -7,7 +7,7 @@
 
         <li><b>owner of this item is: </b>{{ listing.seller }}</li>
         <br>
-        <img src="{{ listing.imageURL }}">
+        <img src="{{ listing.imageURL }}" >
         <br>
         {% if user.is_authenticated %}
             {% if listing.seller == user %}

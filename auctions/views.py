@@ -78,6 +78,8 @@ def add_listing(request):
             description = form.cleaned_data["description"]
             starting_bid = form.cleaned_data["starting_bid"]
             imageURL = form.cleaned_data["imageURL"]
+            if not imageURL:
+                imageURL = "https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg"
             category = Category(name=form.cleaned_data["category"])
 
             if not Category.objects.filter(name=category):

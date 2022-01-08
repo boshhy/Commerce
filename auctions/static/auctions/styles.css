@@ -29,3 +29,19 @@ table {
     padding-left: 5px;
     padding-right: 5px;
 }
+
+.imgbox {
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
+}
+
+.image_listing {
+    width: 94%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 9px;
+    margin-bottom: 9px;
+    display: block;
+}
+
