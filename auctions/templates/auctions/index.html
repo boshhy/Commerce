@@ -5,13 +5,13 @@
     <h2>Active Listings</h2>
     <br>
     <div class="container-fluid">
-        <div class="row" style="margin-left: 75px; margin-right: 0px;"">
+        <div class="row" style="margin-left: 100px; margin-right: 0px;"">
             {% for listing in listings %}
             <div class="center">
             <div class="col-xl-3 center">
-                <div class="card center" style="width:300px; min-height: 500px; background-color: #f7efed;">
+                <div class="card center" style="width:300px; min-height: 500px; max-height: 500px; background-color: #f7efed;">
                     {% if listing.imageURL %}
-                        <img class="image_listing card-img-top" src="{{ listing.imageURL }}" alt="No Image">
+                        <a href="{% url 'listing' listing.id %}"><img class="image_listing card-img-top"  style="max-height: 282px; max-width: 282px; width: auto; height: auto;" src="{{ listing.imageURL }}" alt="No Image"> </a>
                     {% endif %}
                     <li><a href="{% url 'listing' listing.id %}"> {{ listing.title }} </a></li>
                     <ul>
