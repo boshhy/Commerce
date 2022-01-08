@@ -3,11 +3,11 @@
 {% block body %}
     <h4>Active:</h4> <br>
     {% for listing in watchlist %}
-        {{ listing }} <br>
+        <a href="{% url 'listing' listing.listings.id %}">{{ listing.listings.title }}</a><br>
     {% endfor %}
     <br>
     <h4>Ended</h4>
     {% for listing in watchlist_inactive %}
-        {{ listing }}
+        <a href="{% url 'listing' listing.listings.id %}">{{ listing.listings.title }}</a><br>
     {% endfor %}
 {% endblock %}

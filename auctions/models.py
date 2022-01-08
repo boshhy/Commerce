@@ -42,7 +42,7 @@ class Category(models.Model):
     choices = [
         (UNKNOWN, "Unknown"),
         (APPLIANCES, 'Appliances'),
-        (APPS, 'apps & Games'),
+        (APPS, 'Apps & Games'),
         (ARTS, 'Arts, Crafts, & Sewing'),
         (AUTO, 'Automotive Parts & Accessories'),
         (BABY, 'Baby'),
