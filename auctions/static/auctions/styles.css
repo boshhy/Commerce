@@ -52,4 +52,24 @@ a:link {
 
 a:visited {
     color: #2c3632;
-  }
+}
+
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    border: 1px solid black;
+    background-color: #ddd;
+}
+
+.wrapper > div {
+    background-color: #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.wrapper > div:nth-child(odd) {
+    background-color: #ddd;
+    padding: 10px;
+    text-align: center;
+}
