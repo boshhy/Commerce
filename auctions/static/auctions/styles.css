@@ -58,18 +58,15 @@ a:visited {
 .wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    border: 1px solid black;
-    background-color: #ddd;
+    padding-top: 10px;
+    column-gap: 30px;
+    row-gap: 30px;
 }
 
 .wrapper > div {
-    background-color: #ddd;
-    padding: 10px;
     text-align: center;
 }
 
 .wrapper > div:nth-child(odd) {
-    background-color: #ddd;
-    padding: 10px;
     text-align: center;
 }
