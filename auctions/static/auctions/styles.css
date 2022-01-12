@@ -45,3 +45,11 @@ table {
     display: block;
 }
 
+a:link {
+    color: #2c3632;
+
+}
+
+a:visited {
+    color: #2c3632;
+  }
