@@ -1,43 +1,65 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-
+<div style="background-color: #d3d4d6; padding-top: 20px; padding-bottom: 20px;">
 {% if has_won %}
-    <div class="alert alert-primary" role="alert" style="margin: auto; width: 100%;">
+    <div class="alert alert-primary" role="alert" style="margin: auto; width: 90%;">
         <h4 style="margin: auto; text-align:center;">You Won this Listing!</h4>
     </div>
 {% else %}
-    <div class="alert alert-danger" role="alert" style="margin: auto; width: 100%;">
+    <div class="alert alert-danger" role="alert" style="margin: auto; width: 90%;">
         <h4 style="margin: auto; text-align:center;">This listing has ended!</h4>
     </div>
 {% endif %}
-<div>
-    {% if listing.imageURL %}
-    <br>
-    <img src="{{ listing.imageURL }}"> 
-    <br><br>
-    {% endif %}
-    <b>TITLE: </b> {{ listing.title }} <br>
-    <b>Sold for: </b> {{ listing.current_bid }} <br>
-    <b>Sold by: </b> {{ listing.seller }} <br>
-    <b>Sold to: </b> {{ listing.buyer }} <br>
+
+<div class="wrapper_listing">
+    <div style="text-align: right;">
+        <img src="{{ listing.imageURL }}" style="max-height: 500px; max-width: 500px; width: auto; height: auto; border: 1px solid #2c3632;" >
+    </div>
+    <div>
+        <h2> {{ listing.title.capitalize }} </h2>
+        Listed By: {{ listing.seller }} <br><br>
+            <div class="alert alert-success" role="alert" style="width: 90%;">
+                Final Bid: <b> ${{ listing.current_bid}} </b>
+            </div>
+        <!-- Watchlist -->
+        {% if on_watchlist %}
+            <form action="{% url 'inactive' listing.id %}" method="POST">
+                {% csrf_token %}
+                <input name="watchlist" type="hidden">
+                <button style="color: #030303; border-radius: 4px; background-color: red;">Remove from Watchlist</button>
+            </form>
+        {% endif %}
+    </div>
 </div>
 <br>
-{% if comments %}
+<div class="description_title">
+    <h4>Description</h4>
+</div>
+<div class="listing_description">
     <div>
-        <h5><b>comments:</b></h5>
-        <table>
-            <tr>
-            <th>Comment</th>
-            <th>User</th>
-            </tr>
-            {% for comment in comments %}
-            <tr>
-                <td> {{ comment }} </td>
-                <td> {{ comment.user }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+    {{ listing.description.capitalize }}
     </div>
-{% endif %}
+</div>
+<!-- comments -->
+<div style="text-align:center;">
+    {% if comments %}
+        <br>
+        <h4>Comments</h4>
+        <div class="wrapper_comments">
+            <div class="wrapper_comments_row" style="background-color: #899593;">
+                <div ><b>Comment</b></div>
+                <div ><b>User</b></div>
+            </div>
+            {% for comment in comments %}
+                <div class="wrapper_comments_row">
+                    <div> {{ comment }} </div>
+                    <div style="margin: auto;"> {{ comment.user }} </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% endif %}
+</div>
+</div>
 {% endblock %}

@@ -199,16 +199,33 @@ def listing(request, listing_id):
 
 def inactive(request, listing_id):
     has_won = False
+    on_watchlist = False
     listing = Listings.objects.get(pk=int(listing_id))
     if listing.active == True:
         return redirect("listing", listing_id)
     if listing.buyer == request.user:
         has_won = True
     comments = Comments.objects.filter(listing=listing)
+    if WatchList.objects.filter(user=request.user, listings=listing):
+        on_watchlist = True
+
+    if request.method == "POST":
+        on_watchlist = False
+        if "watchlist" in request.POST:
+            WatchList.objects.filter(
+                user=request.user, listings=listing).delete()
+            return render(request, "auctions/inactive_listing.html", {
+                "listing": listing,
+                "comments": comments,
+                "has_won": has_won,
+                "on_watchlist": on_watchlist,
+            })
+
     return render(request, "auctions/inactive_listing.html", {
         "listing": listing,
         "comments": comments,
         "has_won": has_won,
+        "on_watchlist": on_watchlist,
     })
 
 
@@ -237,4 +254,4 @@ def category(request, category):
             "listings": listings,
         })
 
-    return HttpResponse("sorry no items under that category")
+    return HttpResponse("No Items Under This Category")

@@ -70,3 +70,50 @@ a:visited {
 .wrapper > div:nth-child(odd) {
     text-align: center;
 }
+
+.wrapper_listing {
+    display: grid;
+    grid-template-columns: 50% 30%;
+    column-gap: 30px;
+    padding-top: 30px;
+
+}
+
+.wrapper_comments {
+    display: grid;
+    grid-template-columns: 60%;
+    justify-content: center;
+}
+.wrapper_comments_row {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #f0f1f4;
+    border: 1px solid #f0f1f4;
+}
+
+.wrapper_comments > div:nth-child(even) {
+    background-color: #d3d4d6;
+}
+
+.description_title {
+    text-align: center;
+}
+
+.listing_description {
+    text-align: center;
+    display: grid;
+    grid-template-columns: 60%;
+    justify-content: center;
+}
+
+.listing_description > div {
+    color: #2c3632;
+    background-color: #f0f1f4;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: left;
+    padding-left: 15px;
+    border: 1px solid #899593;
+}

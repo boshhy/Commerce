@@ -1,13 +1,76 @@
 {% extends "auctions/layout.html" %}
 
+
+
 {% block body %}
-    <h4>Active:</h4>
-    {% for listing in watchlist %}
-        <a href="{% url 'listing' listing.listings.id %}">{{ listing.listings.title }}</a><br>
-    {% endfor %}
+<div class="center" style="background-color: #d3d4d6;"> <br>
+    <h2 style="text-align: center;">Active Listings On Watchlist</h2>
     <br>
-    <h4>Ended</h4>
-    {% for listing in watchlist_inactive %}
-        <a href="{% url 'listing' listing.listings.id %}">{{ listing.listings.title }}</a><br>
-    {% endfor %}
+    <div class="container-fluid">
+        <div class="row" style="margin-left: 100px; margin-right: 0px;"">
+            {% for listing in watchlist %}
+            <div class="center">
+            <div class="col-xl-3 center">
+                <div class="card center" style="width:300px; height: 500px; background-color: #899593;">
+                    {% if listing.listings.imageURL %}
+                        <a href="{% url 'listing' listing.listings.id %}"><img class="image_listing card-img-top"  style="max-height: 282px; max-width: 282px; width: auto; height: auto; border: 1px solid #2c3632;" src="{{ listing.listings.imageURL }}" alt="No Image"> </a>
+                    {% endif %}
+                    <kbd class="center" style="width: 282px; text-align: center; margin-left: 9px; margin-right: 9px; background-color: #2c3632;">
+                        <b style="text-align: center; text-transform: capitalize;"><a href="{% url 'listing' listing.listings.id %}" style="margin-left: 9px; margin-right: 9px; color: #d3d4d6;"> {{ listing.listings.title }} </a></b>
+                    </kbd>
+                        <div style="margin-left: 9px;">
+                            <b>Current Bid</b>: {{ listing.listings.current_bid }} <br>
+                        </div>
+                        <b style="margin-left: 9px;">Description:</b>
+                        <div style="margin: 9px; margin-top: 0px; background-color:#2c3632; color: #899593; width: 282px; height: 100%; ">
+                            <div style="margin-left: 5px; margin-right: 5px;">
+                                {{ listing.listings.description.capitalize }}
+                            </div>
+                        </div>
+                </div><br>
+            </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <h2 style="text-align: center;">Completed Listings On Watchlist</h2>
+    <br>
+    <div class="container-fluid">
+        <div class="row" style="margin-left: 100px; margin-right: 0px;"">
+            {% for listing in watchlist_inactive %}
+            <div class="center">
+            <div class="col-xl-3 center">
+                {% if listing.listings.buyer == user %}
+                <div class="card center" style="width:300px; height: 500px; background-color: #32CD32;">
+                {% else %}
+
+                <div class="card center" style="width:300px; height: 500px; background-color: red;">
+                {% endif %}
+                    {% if listing.listings.imageURL %}
+                        <a href="{% url 'listing' listing.listings.id %}"><img class="image_listing card-img-top"  style="max-height: 282px; max-width: 282px; width: auto; height: auto; border: 1px solid #2c3632;" src="{{ listing.listings.imageURL }}" alt="No Image"> </a>
+                    {% endif %}
+                    <kbd class="center" style="width: 282px; text-align: center; margin-left: 9px; margin-right: 9px; background-color: #2c3632;">
+                        <b style="text-align: center; text-transform: capitalize;"><a href="{% url 'listing' listing.listings.id %}" style="margin-left: 9px; margin-right: 9px; color: #d3d4d6;"> {{ listing.listings.title }} </a></b>
+                    </kbd>
+                        <div style="margin-left: 9px;">
+                            <b>Final Bid</b>: {{ listing.listings.current_bid }} <br>
+                        </div>
+                        <b style="margin-left: 9px;">Description:</b>
+                        <div style="margin: 9px; margin-top: 0px; background-color:#2c3632; color: #899593; width: 282px; height: 100%; ">
+                            <div style="margin-left: 5px; margin-right: 5px;">
+                                {{ listing.listings.description.capitalize }}
+                            </div>
+                        </div>
+                </div><br>
+            </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+</div>
 {% endblock %}

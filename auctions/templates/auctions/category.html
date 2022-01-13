@@ -2,6 +2,7 @@
 
 {% block body %}
     {% for listing in listings %}
+    Category: {{ listing.category }}<br>
         {{ listing }} <br>
     {% endfor %}
 {% endblock %}
