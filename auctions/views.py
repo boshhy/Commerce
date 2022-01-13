@@ -251,6 +251,7 @@ def category(request, category):
     listings = Listings.objects.filter(category__name=category)
     if listings:
         return render(request, "auctions/category.html", {
+            "category": category,
             "listings": listings,
         })
 
