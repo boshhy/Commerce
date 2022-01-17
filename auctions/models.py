@@ -96,7 +96,7 @@ class Listings(models.Model):
         User, on_delete=models.CASCADE, related_name="purchase_history", blank=True, null=True)
 
     def __str__(self):
-        return f"{self.title} \nseller:{self.seller} \ncurrent bid:{self.current_bid} \nactive:{self.active} \nbuyer:{self.buyer}"
+        return f"{self.title}"
 
 
 class WatchList(models.Model):

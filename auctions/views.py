@@ -101,7 +101,10 @@ def add_listing(request):
 
 
 def listing(request, listing_id):
-    listing = Listings.objects.get(pk=int(listing_id))
+    try:
+        listing = Listings.objects.get(pk=int(listing_id))
+    except Listings.DoesNotExist:
+        return render(request, "auctions/listing_deleted.html")
     if listing.active == False:
         return redirect("inactive", listing_id)
     comments = Comments.objects.filter(listing=listing)
@@ -200,6 +203,10 @@ def listing(request, listing_id):
 def inactive(request, listing_id):
     has_won = False
     on_watchlist = False
+    try:
+        listing = Listings.objects.get(pk=int(listing_id))
+    except Listings.DoesNotExist:
+        return render(request, "auctions/listing_deleted.html")
     listing = Listings.objects.get(pk=int(listing_id))
     if listing.active == True:
         return redirect("listing", listing_id)
@@ -248,11 +255,13 @@ def categories(request):
 
 
 def category(request, category):
-    listings = Listings.objects.filter(category__name=category)
+    listings = Listings.objects.filter(category__name=category, active=True)
     if listings:
         return render(request, "auctions/category.html", {
             "category": category,
             "listings": listings,
         })
 
-    return HttpResponse("No Items Under This Category")
+    return render(request, "auctions/no_items.html", {
+        "category": category,
+    })
