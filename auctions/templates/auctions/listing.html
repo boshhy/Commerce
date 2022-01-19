@@ -1,5 +1,6 @@
 {% extends "auctions/layout.html" %}
 
+<!-- Will be used to display a listing -->
 {% block body %}
     <div style="background-color: #d3d4d6; padding-bottom: 30px; min-height: 82vh">
         <div class="wrapper_listing">
@@ -9,6 +10,7 @@
             <div>
                 <h2> {{ listing.title.capitalize }} </h2>
                 Listed By: {{ listing.seller }} <br><br>
+            <!-- Make sure the user is logged in -->
             {% if user.is_authenticated %}
                 {% if listing.buyer == user %}
                     <div class="alert alert-success" role="alert" style="width: 90%;">
@@ -38,6 +40,7 @@
                     </form>
                 </div>
                 <!-- Watchlist -->
+                <!-- Using a form user will have option to add/remove listing from watchlist -->
                 {% if on_watchlist %}
                     <form action="{% url 'listing' listing.id %}" method="POST">
                         {% csrf_token %}
@@ -52,6 +55,7 @@
                     </form>
                 {% endif %}
                 <br>
+                <!-- If the user that is logged was the one who created the listing, they can end listing -->
                 <div>
                     {% if listing.seller == user %}
                         <form action="{% url 'listing' listing.id %}" method="POST">
@@ -60,6 +64,7 @@
                         </form>
                     {% endif %}
                 </div>
+            <!-- If user is not logged in then display a message -->
             {% else %}
                 <div>
                     Sign in to Bid.
@@ -79,6 +84,7 @@
         </div>
         <!-- comments -->
         <div style="text-align:center;">
+            <!-- only display comments if there is 1 or more comments -->
             {% if comments %}
                 <br>
                 <h4>Comments</h4>
@@ -96,6 +102,7 @@
                 </div>
 
             {% endif %}
+            <!-- if user is logged in they have the option to leave a comment -->
             {% if user.is_authenticated %}
                 <br>
                 <h4>Add a Comment</h4>

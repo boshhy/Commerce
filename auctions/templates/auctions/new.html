@@ -4,6 +4,7 @@
     <h2>Create A New Listing</h2>
     <form method="POST">
         {% csrf_token %}
+        <!-- display the form label name and label field -->
         {% for field in form %}
             <b> {{ field.label  }} </b><br>
             {{ field }}

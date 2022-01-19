@@ -1,7 +1,6 @@
 {% extends "auctions/layout.html" %}
 
-
-
+<!-- Will display items on watchlist separeated by active and inactive listings-->
 {% block body %}
 <div class="center" style="background-color: #d3d4d6; min-height: 82vh;"> <br>
     <h2 style="text-align: center;">Active Listings On Watchlist</h2>
@@ -36,6 +35,7 @@
     <br>
     <h2 style="text-align: center;">Completed Listings On Watchlist</h2>
     <br>
+    <!-- this is the continer for the inactive listings -->
     <div class="container-fluid">
         <div class="row" style="margin-left: 100px; margin-right: 0px;"">
             {% for listing in watchlist_inactive %}

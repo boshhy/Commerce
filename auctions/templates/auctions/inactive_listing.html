@@ -1,7 +1,9 @@
 {% extends "auctions/layout.html" %}
 
+<!-- When a user visits a listing that has been deactivated this page will appear -->
 {% block body %}
 <div style="background-color: #d3d4d6; padding-top: 20px; padding-bottom: 20px;">
+    <!-- If user has won display a message letting the user know they have won -->
 {% if has_won %}
     <div class="alert alert-primary" role="alert" style="margin: auto; width: 90%;">
         <h4 style="margin: auto; text-align:center;">You Won this Listing!</h4>
@@ -23,6 +25,7 @@
                 Final Bid: <b> ${{ listing.current_bid}} </b>
             </div>
         <!-- Watchlist -->
+        <!-- If the listing is on the users watchlist, they have the option to remove it, but now add since listing has already ended -->
         {% if on_watchlist %}
             <form action="{% url 'inactive' listing.id %}" method="POST">
                 {% csrf_token %}
